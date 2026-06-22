@@ -15,11 +15,10 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-your-secret-key-her
 DEBUG = os.getenv('DEBUG', 'True').lower() in ('1', 'true', 'yes', 'on')
 
 ALLOWED_HOSTS = [
-    host.strip()
-    for host in os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
-    if host.strip()
-   
-
+    'hr.rdi.world',
+    '144.91.102.242',
+    'localhost',
+    '127.0.0.1'
 ]
 
 # Application definition
@@ -83,8 +82,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': os.getenv('DB_NAME', 'job_portal_db'),
         'USER': os.getenv('DB_USER', 'root'),
-        'PASSWORD': os.getenv('DB_PASSWORD', 'hunzai@123'),
-        'HOST': os.getenv('DB_HOST', '127.0.0.1'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'StrongPass123'),
+        'HOST': os.getenv('DB_HOST', 'localhost'),
         'PORT': os.getenv('DB_PORT', '3306'),
         'OPTIONS': {
             "init_command": "SET sql_mode='STRICT_ALL_TABLES'",
@@ -174,6 +173,14 @@ _allowed_origins = os.getenv('CORS_ALLOWED_ORIGINS', '')
 CORS_ALLOWED_ORIGINS = [
     origin.strip() for origin in _allowed_origins.split(',') if origin.strip()
 ]
+CORS_ALLOWED_ORIGINS = [
+    'https://hr.rdi.world',
+    'https://www.hr.rdi.world',
+    'http://hr.rdi.world',
+    'http://www.hr.rdi.world',
+    "http://localhost:3000",
+    
+]
 
 CORS_ALLOW_CREDENTIALS = True
 
@@ -197,6 +204,8 @@ CORS_ALLOW_HEADERS = [
     'x-csrftoken',
     'x-requested-with',
 ]
-
-
+# Force HTTPS
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
