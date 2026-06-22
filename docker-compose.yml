@@ -1,0 +1,41 @@
+services:
+  db:
+    image: mysql:8.0
+    command: ["--default-authentication-plugin=mysql_native_password"]
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_NAME:-job_portal_db}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-StrongPass123}
+      MYSQL_USER: ${DB_USER:-root}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-StrongPass123}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  web:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      - db
+    env_file:
+      - .env
+    environment:
+      # Ensure container uses the MySQL service hostname
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: ${DB_NAME:-job_portal_db}
+      DB_USER: ${DB_USER:-root}
+      DB_PASSWORD: ${DB_PASSWORD:-StrongPass123}
+
+      # Development defaults (can be overridden in .env)
+      DEBUG: ${DEBUG:-True}
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:-django-insecure-your-secret-key-here}
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+
+volumes:
+  mysql_data:
+

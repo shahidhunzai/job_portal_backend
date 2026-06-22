@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+.pytest_cache/
+*.sqlite3
+*.db
+media/
+staticfiles/
+env
+.git/
+.gitignore
+Dockerfile
+docker-compose.yml
+
