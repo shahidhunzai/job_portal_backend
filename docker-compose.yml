@@ -9,7 +9,7 @@ services:
       MYSQL_USER: ${DB_USER:-root}
       MYSQL_PASSWORD: ${DB_PASSWORD:-StrongPass123}
     ports:
-     - "3307:3306"
+     - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
 
@@ -32,7 +32,7 @@ services:
       DEBUG: ${DEBUG:-True}
       DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:-django-insecure-your-secret-key-here}
     ports:
-      - "8006:8006"
+      - "8000:8000"
     volumes:
       - .:/app
 
