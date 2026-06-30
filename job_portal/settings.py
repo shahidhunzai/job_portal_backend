@@ -14,11 +14,14 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-your-secret-key-her
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'True').lower() in ('1', 'true', 'yes', 'on')
 
+_allowed_hosts = os.getenv(
+    'ALLOWED_HOSTS',
+    'hr.rdi.world,144.91.102.242,localhost,127.0.0.1'
+)
 ALLOWED_HOSTS = [
-    'hr.rdi.world',
-    '144.91.102.242',
-    'localhost',
-    '127.0.0.1'
+    host.strip().strip("'\"")
+    for host in _allowed_hosts.split(',')
+    if host.strip().strip("'\"")
 ]
 
 # Application definition
@@ -171,16 +174,18 @@ CORS_ALLOW_ALL_ORIGINS = os.getenv('CORS_ALLOW_ALL_ORIGINS', 'false').lower() in
 
 _allowed_origins = os.getenv('CORS_ALLOWED_ORIGINS', '')
 CORS_ALLOWED_ORIGINS = [
-    origin.strip() for origin in _allowed_origins.split(',') if origin.strip()
+    origin.strip().strip("'\"")
+    for origin in _allowed_origins.split(',')
+    if origin.strip().strip("'\"")
 ]
-CORS_ALLOWED_ORIGINS = [
-    'https://hr.rdi.world',
-    'https://www.hr.rdi.world',
-    'http://hr.rdi.world',
-    'http://www.hr.rdi.world',
-    "http://localhost:3000",
-    
-]
+if not CORS_ALLOWED_ORIGINS:
+    CORS_ALLOWED_ORIGINS = [
+        'https://hr.rdi.world',
+        'https://www.hr.rdi.world',
+        'http://hr.rdi.world',
+        'http://www.hr.rdi.world',
+        'http://localhost:3000',
+    ]
 
 CORS_ALLOW_CREDENTIALS = True
 
@@ -205,7 +210,7 @@ CORS_ALLOW_HEADERS = [
     'x-requested-with',
 ]
 # Force HTTPS
-SECURE_SSL_REDIRECT = True
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = os.getenv('SECURE_SSL_REDIRECT', 'True').lower() in ('1', 'true', 'yes', 'on')
+SESSION_COOKIE_SECURE = os.getenv('SESSION_COOKIE_SECURE', 'True').lower() in ('1', 'true', 'yes', 'on')
+CSRF_COOKIE_SECURE = os.getenv('CSRF_COOKIE_SECURE', 'True').lower() in ('1', 'true', 'yes', 'on')
 
